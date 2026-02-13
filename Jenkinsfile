@@ -1,22 +1,18 @@
 pipeline {
     agent any
 
-    parameters {
-        string(name: 'CITY', defaultValue: 'London', description: 'Enter city')
-    }
-
-    environment {
-        COUNTRY = "UK"
-    }
-
     stages {
-        stage('Test Variables') {
+        stage('Set Variable') {
             steps {
                 script {
-                    def greeting = "Welcome"
-
-                    echo "${greeting} to ${params.CITY}, ${env.COUNTRY}"
+                    env.NEW_VAR = "Dynamic Value"
                 }
+            }
+        }
+
+        stage('Print') {
+            steps {
+                echo "${env.NEW_VAR}"
             }
         }
     }

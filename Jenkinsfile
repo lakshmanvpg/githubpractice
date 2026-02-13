@@ -2,31 +2,21 @@ pipeline {
     agent any
 
     parameters {
-        choice(name: 'ENV', choices: ['dev', 'qa', 'prod'], description: 'Select env')
+        string(name: 'CITY', defaultValue: 'London', description: 'Enter city')
+    }
+
+    environment {
+        COUNTRY = "UK"
     }
 
     stages {
-
-        stage('Build') {
+        stage('Test Variables') {
             steps {
-                echo "Building..."
-            }
-        }
+                script {
+                    def greeting = "Welcome"
 
-        stage('Approval for Prod') {
-            when {
-                expression { params.ENV == 'prod' }
-            }
-            steps {
-                timeout(time: 1, unit: 'MINUTES') {
-                    input message: "Approve Production Deployment?"
+                    echo "${greeting} to ${params.CITY}, ${env.COUNTRY}"
                 }
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                echo "Deploying to ${params.ENV}"
             }
         }
     }

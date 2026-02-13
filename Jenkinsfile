@@ -2,13 +2,14 @@ pipeline {
     agent any
 
     options {
-        buildDiscarder(logRotator(numToKeepStr: '5'))
+        disableConcurrentBuilds()
     }
 
     stages {
         stage('Build') {
             steps {
-                echo "Building..."
+                echo "Building project..."
+                sleep 10
             }
         }
     }

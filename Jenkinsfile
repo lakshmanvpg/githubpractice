@@ -1,12 +1,14 @@
 pipeline {
     agent any
 
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '5'))
+    }
+
     stages {
-        stage('Retry Example') {
+        stage('Build') {
             steps {
-                retry(3) {
-                    sh 'exit 1'
-                }
+                echo "Building..."
             }
         }
     }

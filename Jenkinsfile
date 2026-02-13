@@ -1,24 +1,34 @@
 pipeline {
     agent any
 
+    parameters {
+        choice(name: 'ENV', choices: ['dev', 'qa', 'prod'], description: 'Select env')
+    }
+
     stages {
         stage('Build') {
             steps {
-                echo "Building..."
-                sh 'exit 1'   // Change to exit 1 to test failure
+                echo "Building app..."
             }
         }
-    }
 
-    post {
-        success {
-            echo "Build Success ✅"
+        stage('Deploy to Dev/QA') {
+            when {
+                expression { params.ENV != 'prod' }
+            }
+            steps {
+                echo "Deploying to ${params.ENV}"
+            }
         }
-        failure {
-            echo "Build Failed ❌"
-        }
-        always {
-            echo "Pipeline Finished"
+
+        stage('Production Approval') {
+            when {
+                expression { params.ENV == 'prod' }
+            }
+            steps {
+                input "Approve Production?"
+                echo "Deploying to Production"
+            }
         }
     }
 }

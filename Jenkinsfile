@@ -2,17 +2,11 @@ pipeline {
     agent any
 
     stages {
-        stage('Set Variable') {
+        stage('Retry Example') {
             steps {
-                script {
-                    env.NEW_VAR = "Dynamic Value"
+                retry(3) {
+                    sh 'exit 1'
                 }
-            }
-        }
-
-        stage('Print') {
-            steps {
-                echo "${env.NEW_VAR}"
             }
         }
     }

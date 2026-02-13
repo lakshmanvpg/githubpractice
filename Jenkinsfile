@@ -6,28 +6,27 @@ pipeline {
     }
 
     stages {
+
         stage('Build') {
             steps {
-                echo "Building app..."
+                echo "Building..."
             }
         }
 
-        stage('Deploy to Dev/QA') {
-            when {
-                expression { params.ENV != 'prod' }
-            }
-            steps {
-                echo "Deploying to ${params.ENV}"
-            }
-        }
-
-        stage('Production Approval') {
+        stage('Approval for Prod') {
             when {
                 expression { params.ENV == 'prod' }
             }
             steps {
-                input "Approve Production?"
-                echo "Deploying to Production"
+                timeout(time: 1, unit: 'MINUTES') {
+                    input message: "Approve Production Deployment?"
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo "Deploying to ${params.ENV}"
             }
         }
     }

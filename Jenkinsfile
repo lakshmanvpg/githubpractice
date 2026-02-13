@@ -5,7 +5,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo "Building..."
-                sh 'exit 0'   // Change to exit 1 to test failure
+                sh 'exit 1'   // Change to exit 1 to test failure
             }
         }
     }

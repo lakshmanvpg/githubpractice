@@ -1,15 +1,15 @@
 pipeline {
     agent any
 
-    options {
-        disableConcurrentBuilds()
+    triggers {
+        pollSCM('H/1 * * * *')
     }
 
     stages {
-        stage('Build') {
+        stage('SCM Check') {
             steps {
-                echo "Building project..."
-                sleep 70
+                echo "Checking for Git changes"
+                sh 'date'
             }
         }
     }
